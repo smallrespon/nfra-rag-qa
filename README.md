@@ -13,28 +13,31 @@
 | 库外拒答率 | ≥80% | **100%** |
 | 总体 MCQ 准确率 | — | **92.8%** (181/195) |
 
-评测集与详细评测报告不入库（见下文「数据与复现说明」）。
-
 ## 环境
 
 - Python 3.12,依赖见 `requirements.txt`
-- LLM:OpenAI 兼容 / Anthropic 兼容 API 双协议(默认 qwen3.7-flash @ 百炼;`configs/llm.yaml` 切换,密钥放 `configs/secrets.yaml`——**不入库、不进提交材料**)
+- LLM:OpenAI 兼容 / Anthropic 兼容 API 双协议(默认 qwen3.7-flash @ 百炼;`configs/llm.yaml` 切换,密钥放 `configs/secrets.yaml`,需自行创建)
 - 可选 GPU(RTX 4060 实测):BGE-M3 向量 + bge-reranker 精排
 
-## 数据与复现说明（开源范围）
-
-本仓库只含**系统代码**，不含以下内容（体积/版权/合规原因），按此复现：
-
-| 不入库内容 | 原因 | 复现方式 |
-|---|---|---|
-| `data/数据集/`（500 份 NFRA 监管文件，约 207MB） | 体积大；版权归 NFRA/原发布方 | 从国家金融监督管理总局官网按 `data/manifest.json` 清单自行下载，放置为 `data/数据集/编号.ext` |
-| 评测题库（QA数据.xlsx 及 `data/eval/` 全部衍生文件） | 教师提供材料，题库不公开 | — |
-| `data/processed/`、`spreadsheet_objects.json` 等索引产物（约 470MB） | 均为派生物 | `使用` 段第 4 步知识库构建命令全流程重建 |
-| `configs/secrets.yaml` | 密钥 | 自建，格式：`dashscope:\n  api_key: <你的Key>`（`chmod 600`，勿提交） |
+## 数据准备
 
 ```bash
 pip install -r requirements.txt
 ```
+
+系统不附带语料，运行前需自备监管制度与统计报表文件（Word/PDF/Excel）：
+
+1. 将文件放置到 `data/数据集/`（公开监管文件可从国家金融监督管理总局官网下载，命名与清单规则见 `data/manifest.json`、`data/filename_mapping.json`）；
+2. 创建 `configs/secrets.yaml` 并写入你的 LLM API Key（勿提交到任何仓库）：
+
+   ```yaml
+   dashscope:
+     api_key: <你的Key>
+   ```
+
+3. 执行下方「使用」第 4 步构建知识库索引。
+
+评测脚本读取 `data/eval/qa_dataset.jsonl`，题目集同样自备（字段格式见 `scripts/build_qa.py`）。
 
 ## 使用
 
@@ -49,7 +52,7 @@ uvicorn src.api:app --host 127.0.0.1 --port 8000
 #   POST /ask  {"question": "..."}  →  {answer, evidence[], fidelity, latency_ms}
 #   GET  /health
 
-# 3) 评测(300 题按源文件整组切分 dev/test,test 锁箱)
+# 3) 评测(需自备 data/eval/qa_dataset.jsonl,dev/test 按源文件整组切分防同干题泄漏)
 python3 scripts/run_baseline.py --split dev [--rerank]
 python3 scripts/s3_hitrate.py data/eval/predictions_baseline.jsonl
 
@@ -77,7 +80,7 @@ python3 scripts/build_vector_index.py # BGE-M3 向量(需 GPU/网络)
 ```
 src/          llm_client.py(双协议客户端) api.py(HTTP 服务+Web 界面挂载) static/(前端页面,零依赖原生 HTML/CSS/JS)
 scripts/      数据整备/解析/索引/检索/评测/问答 全流程脚本
-configs/      llm.yaml(模型配置;secrets.yaml 密钥自建,不入库)
-data/         manifest.json 与 filename_mapping.json(语料清单元数据;语料/索引/评测不入库,见上文)
+configs/      llm.yaml(模型配置;secrets.yaml 需自行创建)
+data/         manifest.json 与 filename_mapping.json(语料清单元数据)
 LICENSE       MIT
 ```

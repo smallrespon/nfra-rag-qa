@@ -1,30 +1,24 @@
-# ===== 密钥与敏感配置(绝不入库) =====
+# ===== 密钥与敏感配置(绝不提交) =====
 configs/secrets.yaml
 *.key
 *.pem
 
-# ===== 原始语料与派生产物(体积大,均可用 scripts/ 全流程重建) =====
+# ===== 原始语料与派生产物(体积大,可用 scripts/ 全流程重建) =====
 data.zip
 data/*
-# 例外:语料清单元数据(小体积,便于读者了解语料规模与命名规则)
 !data/manifest.json
 !data/filename_mapping.json
 
-# ===== 教师提供的课程材料(不入开源库) =====
+# ===== 本地文档与数据(不随仓库分发) =====
+*.docx
 QA数据.xlsx
-面向监管制度与统计报表的可信RAG问答系统_实验需求说明书.docx
-面向银行业监管制度与统计报表的可信RAG问答.docx
+开发计划.md
+docs/
 
 # ===== 本地工具与系统文件 =====
+.zcode/
 .zcodeignore
 __pycache__/
 *.pyc
 nohup.out
 .DS_Store
-
-# ===== ZCode 本地会话状态 =====
-.zcode/
-
-# ===== 个人/课程材料(本地保留供课程提交,不入开源库) =====
-开发计划.md
-docs/

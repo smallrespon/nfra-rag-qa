@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""M4 验收演示 + 提交包敏感信息扫描。
+"""问答演示 + 敏感信息扫描。
 
 用法:
   python3 scripts/acceptance_demo.py            # 随机抽文本题+表格题各1道演示
-  python3 scripts/acceptance_demo.py --scan     # 提交材料密钥扫描
+  python3 scripts/acceptance_demo.py --scan     # 仓库密钥泄漏扫描
 """
 import os
 import random

@@ -5,7 +5,7 @@
 2. file_label → doc_id 映射(级联:精确子串 → 截断容错 → difflib 相似度兜底),
    修复"原文件名被截断"导致无法溯源的题目;
 3. 按源文件整组切分 dev/test(同一 doc_id 的题绝不跨集,防同干题泄漏);
-   目标 dev≈100。test 分割锁箱:仅正式评测运行。
+   目标 dev≈100。test 分割仅在正式评测时使用。
 4. 落盘 data/eval/qa_dataset.jsonl 与 data/eval/split_summary.json。
 
 用法: python3 scripts/build_qa.py
@@ -191,7 +191,7 @@ def main() -> int:
         "dev_doc_ids": sorted(dev_docs),
         "test_doc_ids": sorted(test_docs),
         "truncation_fixed": truncation_fixed,
-        "note": "test 锁箱:仅允许在正式评测运行,其余实验一律只用 dev",
+        "note": "test 分割仅在正式评测时使用,日常调参只使用 dev",
     }
     with open(OUT_SUMMARY, "w", encoding="utf-8") as fp:
         json.dump(summary, fp, ensure_ascii=False, indent=1)
