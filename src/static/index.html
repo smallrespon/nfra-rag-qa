@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>监管制度可信 RAG 问答系统</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="logo">监</span>
+      <h1>监管制度可信 RAG 问答系统</h1>
+    </div>
+    <span id="health" class="health loading" title="正在检查服务状态">
+      <i class="dot"></i><span id="health-text">连接中…</span>
+    </span>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card ask-panel">
+    <textarea id="question" rows="3"
+      placeholder="输入监管制度或统计报表相关问题，例如：根据《消费金融公司管理办法》，消费金融公司的最低注册资本是多少？"></textarea>
+    <div class="examples">
+      <span class="examples-label">示例：</span>
+      <div id="example-chips" class="chips"></div>
+    </div>
+    <div class="actions">
+      <span class="hint">Ctrl+Enter 快速提交 · 回答通常需数秒到数十秒</span>
+      <button id="ask-btn" disabled>提 问</button>
+    </div>
+  </section>
+
+  <section class="history-head">
+    <h2>问答记录</h2>
+    <button id="clear-btn" class="link-btn" type="button">清空历史</button>
+  </section>
+  <section id="history" aria-live="polite"></section>
+</main>
+
+<footer class="foot">
+  答案与证据均来自本地知识库（NFRA 监管制度与统计报表）；证据不足时系统将拒答。
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

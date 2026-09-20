@@ -1,0 +1,16 @@
+# LLM 提供方配置:openai 格式与 anthropic 格式双协议,active 切换
+active: dashscope_anthropic
+
+providers:
+  dashscope_anthropic:            # 百炼 Anthropic 兼容端点(当前测试用)
+    protocol: anthropic
+    base_url: https://dashscope.aliyuncs.com/apps/anthropic
+    model: qwen3.7-flash
+    api_key_ref: dashscope
+    max_retries: 3
+  dashscope_openai:               # 百炼 OpenAI 兼容端点(备用切换)
+    protocol: openai
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    model: qwen3.7-flash
+    api_key_ref: dashscope
+    max_retries: 3

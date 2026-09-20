@@ -1,0 +1,15 @@
+# 运行时
+openpyxl>=3.1
+xlrd>=2.0
+pdfplumber>=0.11
+python-docx>=1.1
+jieba>=0.42
+rank_bm25>=0.2
+numpy>=1.26
+httpx[socks]>=0.27
+pyyaml>=6.0
+fastapi>=0.115
+uvicorn[standard]>=0.30
+# 检索语义层(可选,GPU 加速)
+sentence-transformers>=3.0
+torch>=2.5
